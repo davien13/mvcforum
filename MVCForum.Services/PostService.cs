@@ -578,15 +578,18 @@ namespace MVCForum.Services
                 // create the post
                 Add(newPost);
 
-                // Update the users points score and post count for posting
-                _membershipUserPointsService.Add(new MembershipUserPoints
-                                                     {
-                                                         Points = _settingsService.GetSettings().PointsAddedPerPost,
-                                                         User = user,
-                                                         PointsFor = PointsFor.Post,
-                                                         PointsForId = newPost.Id
-                                                     });
+                if (newPost.PostContent.Length > 60)
+                {
 
+                    // Update the users points score and post count for posting
+                    _membershipUserPointsService.Add(new MembershipUserPoints
+                    {
+                        Points = _settingsService.GetSettings().PointsAddedPerPost,
+                        User = user,
+                        PointsFor = PointsFor.Post,
+                        PointsForId = newPost.Id
+                    });
+                }
                 // add the last post to the topic
                 topic.LastPost = newPost;
 
